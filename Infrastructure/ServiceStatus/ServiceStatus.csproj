@@ -7,7 +7,6 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <AssemblyName>RecAll.Infractructure.ServiceStatus</AssemblyName>
         <RootNamespace>RecAll.Infractructure.ServiceStatus</RootNamespace>
-        <LangVersion>10</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

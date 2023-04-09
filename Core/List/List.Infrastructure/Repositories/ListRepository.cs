@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RecAll.Core.List.Domain.AggregateModels.ListAggregate;
 using RecAll.Infrastructure.Ddd.Domain.SeedWork;
 
@@ -6,7 +6,7 @@ namespace RecAll.Core.List.Infrastructure.Repositories;
 
 public class ListRepository : IListRepository {
     private readonly ListContext _context;
-    
+
     public IUnitOfWork UnitOfWork => _context;
 
     public ListRepository(ListContext context) {
@@ -14,9 +14,8 @@ public class ListRepository : IListRepository {
     }
 
     public Domain.AggregateModels.ListAggregate.List Add(
-        Domain.AggregateModels.ListAggregate.List list)
-    {
-        return _context.Add(list).Entity;
+        Domain.AggregateModels.ListAggregate.List list) {
+        return _context.Lists.Add(list).Entity;
     }
 
     public async Task<Domain.AggregateModels.ListAggregate.List> GetAsync(
@@ -32,8 +31,7 @@ public class ListRepository : IListRepository {
             return null;
         }
 
-        await _context.Entry(list)
-            .Reference(p => p.Type).LoadAsync();
+        await _context.Entry(list).Reference(p => p.Type).LoadAsync();
         return list;
     }
 }

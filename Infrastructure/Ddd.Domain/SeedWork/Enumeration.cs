@@ -1,6 +1,6 @@
-﻿using System.Reflection;
+using System.Reflection;
 
-namespace RecAll.Infrastructure.Ddd.Domain.SeedWork;
+namespace RecAll.Infrastructure.Ddd.Domain.SeedWork; 
 
 public abstract class Enumeration : IComparable {
     public int Id { get; private set; }

@@ -4,12 +4,12 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <AssemblyName>RecAll.Infrastructure.Ddd.Domain </AssemblyName>
-        <RootNamespace>RecAll.Infrastructure.Ddd.Domain </RootNamespace>
+        <AssemblyName>RecAll.Infrastructure.Ddd.Domain</AssemblyName>
+        <RootNamespace>RecAll.Infrastructure.Ddd.Domain</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MediatR" Version="12.0.1" />
+      <PackageReference Include="MediatR" Version="11.1.0" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace RecAll.Infrastructure.Ddd.Domain.Exceptions;
+namespace RecAll.Infrastructure.Ddd.Domain.Exceptions; 
 
 public class DomainException : Exception {
     public DomainException() { }

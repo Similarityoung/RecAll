@@ -1,6 +1,3 @@
-﻿namespace RecAll.Infrastructure.Ddd.Domain.SeedWork;
+namespace RecAll.Infrastructure.Ddd.Domain.SeedWork; 
 
-public interface IAggregateRoot
-{
-    
-}
+public interface IAggregateRoot { }

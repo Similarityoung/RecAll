@@ -1,4 +1,4 @@
-﻿namespace RecAll.Infrastructure.Api;
+namespace RecAll.Infrastructure.Api; 
 
 public class ServiceResultViewModel {
     public ServiceResultStatus Status { get; set; }

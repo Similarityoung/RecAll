@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RecAll.Infrastructure.Ddd.Domain.SeedWork;
 
@@ -9,8 +9,8 @@ public static class MediatorExtension {
         DbContext context) {
         var domainEntities = 
             context.ChangeTracker.Entries<Entity>()
-                .Where(p =>
-            p.Entity.DomainEvents != null && p.Entity.DomainEvents.Any());
+                .Where(p => 
+                    p.Entity.DomainEvents != null && p.Entity.DomainEvents.Any());
         var domainEvents = domainEntities
             .SelectMany(p => p.Entity.DomainEvents)
             .ToList();

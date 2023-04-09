@@ -1,6 +1,6 @@
-﻿using MediatR;
+using MediatR;
 
-namespace RecAll.Core.List.Domain.Events;
+namespace RecAll.Core.List.Domain.Events; 
 
 public class ListDeletedDomainEvent : INotification {
     public AggregateModels.ListAggregate.List List { get; }

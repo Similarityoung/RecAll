@@ -1,6 +1,5 @@
-﻿namespace RecAll.Core.List.Api.Infrastructure.Services;
+namespace RecAll.Core.List.Api.Infrastructure.Services; 
 
-public interface IIdentityService
-{
+public interface IIdentityService {
     string GetUserIdentityGuid();
 }

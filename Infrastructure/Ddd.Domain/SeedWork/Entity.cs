@@ -1,12 +1,12 @@
-﻿using MediatR;
+using MediatR;
 
-namespace RecAll.Infrastructure.Ddd.Domain.SeedWork;
+namespace RecAll.Infrastructure.Ddd.Domain.SeedWork; 
 
 public abstract class Entity {
     protected int? _requestedHashCode;
     protected int _id;
 
-    public virtual int Id { 
+    public virtual int Id {
         get => _id;
         protected set => _id = value;
     }

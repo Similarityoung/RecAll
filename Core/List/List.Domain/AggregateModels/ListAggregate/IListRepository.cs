@@ -1,4 +1,4 @@
-﻿using RecAll.Infrastructure.Ddd.Domain.SeedWork;
+using RecAll.Infrastructure.Ddd.Domain.SeedWork;
 
 namespace RecAll.Core.List.Domain.AggregateModels.ListAggregate;
 

@@ -1,4 +1,4 @@
-﻿using RecAll.Infrastructure.Ddd.Domain.Exceptions;
+using RecAll.Infrastructure.Ddd.Domain.Exceptions;
 
 namespace RecAll.Core.List.Domain.Exceptions;
 
