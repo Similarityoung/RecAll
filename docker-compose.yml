@@ -13,6 +13,12 @@ services:
       - "host.docker.internal:host-gateway"
 
 
+  recall-rabbitmq:
+    image: rabbitmq:3-management-alpine
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+
   recall-textlist.api:
     image: ${DOCKER_REGISTRY-}recall-textlist.api
     build:

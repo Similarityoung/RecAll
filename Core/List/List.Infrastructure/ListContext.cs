@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Storage;
 using RecAll.Core.List.Domain.AggregateModels;
+using RecAll.Core.List.Domain.AggregateModels.ItemAggregate;
 using RecAll.Core.List.Domain.AggregateModels.SetAggregate;
 using RecAll.Core.List.Infrastructure.EntityConfigurations;
 using RecAll.Infrastructure.Ddd.Domain.SeedWork;
@@ -18,7 +19,9 @@ public class ListContext : DbContext, IUnitOfWork {
     public DbSet<Domain.AggregateModels.ListAggregate.List> Lists { get; set; }
 
     public DbSet<Set> Sets { get; set; }
-    
+
+    public DbSet<Item> Items { get; set; }
+
     public DbSet<ListType> ListTypes { get; set; }
 
     private readonly IMediator _mediator;
@@ -50,6 +53,8 @@ public class ListContext : DbContext, IUnitOfWork {
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         modelBuilder.ApplyConfiguration(new ListTypeConfiguration());
         modelBuilder.ApplyConfiguration(new ListConfiguration());
+        modelBuilder.ApplyConfiguration(new SetConfiguration());
+        modelBuilder.ApplyConfiguration(new ItemConfiguration());
     }
 
     public async Task<IDbContextTransaction> BeginTransactionAsync() {

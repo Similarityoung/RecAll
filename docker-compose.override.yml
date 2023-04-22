@@ -18,6 +18,15 @@ services:
       - recall-sqldata:/var/opt/mssql
 
 
+  recall-rabbitmq:
+    ports:
+      - "45672:15672"
+      - "35672:5672"
+    volumes:
+      - recall-rabbitmq-data:/var/lib/rabbitmq/
+      - recall-rabbitmq-log:/var/log/rabbitmq/
+
+
   recall-textlist.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -29,7 +38,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "35200:80"
+      - "35201:80"
         
         
   recall-envoygateway:
@@ -49,4 +58,8 @@ services:
 
 volumes:
   recall-sqldata:
+    external: false
+  recall-rabbitmq-data:
+    external: false
+  recall-rabbitmq-log:
     external: false

@@ -1,9 +1,10 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using RecAll.Core.List.Api.Application.IntegrationEvents;
 using RecAll.Core.List.Infrastructure;
 using Serilog.Context;
 
-namespace RecAll.Core.List.Api.Application.Behaviors; 
+namespace RecAll.Core.List.Api.Application.Behaviors;
 
 public class
     TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest,
@@ -12,13 +13,13 @@ public class
 
     private readonly ListContext _listContext;
 
-    // private readonly IListIntegrationEventService _listIntegrationEventService;
+    private readonly IListIntegrationEventService _listIntegrationEventService;
 
     public TransactionBehaviour(ListContext listContext,
-        // IListIntegrationEventService listIntegrationEventService,
+        IListIntegrationEventService listIntegrationEventService,
         ILogger<TransactionBehaviour<TRequest, TResponse>> logger) {
         _listContext = listContext;
-        // _listIntegrationEventService = listIntegrationEventService;
+        _listIntegrationEventService = listIntegrationEventService;
         _logger = logger;
     }
 
@@ -50,11 +51,11 @@ public class
                         transaction.TransactionId, typeName);
 
                     await _listContext.CommitTransactionAsync(transaction);
-                    // transactionId = transaction.TransactionId;
+                    transactionId = transaction.TransactionId;
                 }
 
-                // await _listIntegrationEventService.PublishEventsAsync(
-                //     transactionId);
+                await _listIntegrationEventService.PublishEventsAsync(
+                    transactionId);
             });
 
             return response;

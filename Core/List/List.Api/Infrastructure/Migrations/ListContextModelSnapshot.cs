@@ -21,8 +21,55 @@ namespace RecAll.Core.List.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.HasSequence("itemseq", "list")
+                .IncrementsBy(10);
+
             modelBuilder.HasSequence("listseq", "list")
                 .IncrementsBy(10);
+
+            modelBuilder.HasSequence("setseq", "list")
+                .IncrementsBy(10);
+
+            modelBuilder.Entity("RecAll.Core.List.Domain.AggregateModels.ItemAggregate.Item", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "itemseq", "list");
+
+                    b.Property<string>("ContribId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("ContribId");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<string>("UserIdentityGuid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("UserIdentityGuid");
+
+                    b.Property<int>("_setId")
+                        .HasColumnType("int")
+                        .HasColumnName("SetId");
+
+                    b.Property<int>("_typeId")
+                        .HasColumnType("int")
+                        .HasColumnName("TypeId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContribId");
+
+                    b.HasIndex("_setId");
+
+                    b.HasIndex("_typeId");
+
+                    b.ToTable("items", (string)null);
+                });
 
             modelBuilder.Entity("RecAll.Core.List.Domain.AggregateModels.ListAggregate.List", b =>
                 {
@@ -84,16 +131,54 @@ namespace RecAll.Core.List.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "setseq", "list");
 
-                    b.Property<int>("TypeId")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<string>("UserIdentityGuid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("UserIdentityGuid");
+
+                    b.Property<int>("_listId")
+                        .HasColumnType("int")
+                        .HasColumnName("ListId");
+
+                    b.Property<string>("_name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Name");
+
+                    b.Property<int>("_typeId")
+                        .HasColumnType("int")
+                        .HasColumnName("TypeId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("_listId");
 
-                    b.ToTable("Sets");
+                    b.HasIndex("_typeId");
+
+                    b.ToTable("sets", (string)null);
+                });
+
+            modelBuilder.Entity("RecAll.Core.List.Domain.AggregateModels.ItemAggregate.Item", b =>
+                {
+                    b.HasOne("RecAll.Core.List.Domain.AggregateModels.SetAggregate.Set", null)
+                        .WithMany()
+                        .HasForeignKey("_setId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("RecAll.Core.List.Domain.AggregateModels.ListType", "Type")
+                        .WithMany()
+                        .HasForeignKey("_typeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("RecAll.Core.List.Domain.AggregateModels.ListAggregate.List", b =>
@@ -109,10 +194,16 @@ namespace RecAll.Core.List.Infrastructure.Migrations
 
             modelBuilder.Entity("RecAll.Core.List.Domain.AggregateModels.SetAggregate.Set", b =>
                 {
+                    b.HasOne("RecAll.Core.List.Domain.AggregateModels.ListAggregate.List", null)
+                        .WithMany()
+                        .HasForeignKey("_listId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RecAll.Core.List.Domain.AggregateModels.ListType", "Type")
                         .WithMany()
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("_typeId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Type");

@@ -16,8 +16,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Application\IntegrationEvents" />
       <Folder Include="Infrastructure\Filters" />
+      <Folder Include="Infrastructure\Migrations\IntegrationEventLog\" />
       <Folder Include="Infrastructure\Migrations\List" />
     </ItemGroup>
 
@@ -48,7 +48,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Infrastructure\EventBus.RabbitMQ\EventBus.RabbitMQ.csproj" />
       <ProjectReference Include="..\..\..\Infrastructure\Infrastructure.Api\Infrastructure.Api.csproj" />
+      <ProjectReference Include="..\..\..\Infrastructure\IntegrationEventLog\IntegrationEventLog.csproj" />
       <ProjectReference Include="..\List.Infrastructure\List.Infrastructure.csproj" />
     </ItemGroup>
 
