@@ -1,11 +1,22 @@
-﻿using Serilog;
+﻿using RecAll.Contrib.MaskedTextList.Api.IntegrationEvents;
+using RecAll.Infrastructure.EventBus.Abstractions;
+using Serilog;
+// using ILogger = Microsoft.Extensions.Logging.ILogger;
 using ILogger = Serilog.ILogger;
 
-namespace RecAll.Contrib.TextList.Api;
+namespace RecAll.Contrib.MaskedTextList.Api;
 
 public class InitialFunctions {
     public static string Namespace = typeof(InitialFunctions).Namespace;
     public static string AppName = Namespace;
+    
+    public static void ConfigureEventBus(IApplicationBuilder app) {
+        var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+
+        eventBus
+            .Subscribe<ItemIdAssignedIntegrationEvent, IIntegrationEventHandler<
+                ItemIdAssignedIntegrationEvent>>();
+    }
     
     public static ILogger CreateSerilogLogger(IConfiguration configuration) {
         var seqServerUrl = configuration["Serilog:SeqServerUrl"];
@@ -23,5 +34,4 @@ public class InitialFunctions {
 
         return cfg.CreateLogger();
     }
-    
 }

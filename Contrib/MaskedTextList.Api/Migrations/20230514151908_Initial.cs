@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace RecAll.Contrib.TextList.Api.Migrations
+namespace RecAll.Contrib.MaskedTextList.Api.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -11,38 +11,39 @@ namespace RecAll.Contrib.TextList.Api.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "textlist");
+                name: "maskedtextlist");
 
             migrationBuilder.CreateSequence(
-                name: "textitemseq",
-                schema: "textlist",
+                name: "maskedtextitems",
+                schema: "maskedtextlist",
                 incrementBy: 10);
 
             migrationBuilder.CreateTable(
-                name: "textitems",
+                name: "maskedtextitems",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
                     ItemId = table.Column<int>(type: "int", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MaskedContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserIdentityGuid = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_textitems", x => x.Id);
+                    table.PrimaryKey("PK_maskedtextitems", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_textitems_ItemId",
-                table: "textitems",
+                name: "IX_maskedtextitems_ItemId",
+                table: "maskedtextitems",
                 column: "ItemId",
                 unique: true,
                 filter: "[ItemId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_textitems_UserIdentityGuid",
-                table: "textitems",
+                name: "IX_maskedtextitems_UserIdentityGuid",
+                table: "maskedtextitems",
                 column: "UserIdentityGuid");
         }
 
@@ -50,11 +51,11 @@ namespace RecAll.Contrib.TextList.Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "textitems");
+                name: "maskedtextitems");
 
             migrationBuilder.DropSequence(
-                name: "textitemseq",
-                schema: "textlist");
+                name: "maskedtextitems",
+                schema: "maskedtextlist");
         }
     }
 }

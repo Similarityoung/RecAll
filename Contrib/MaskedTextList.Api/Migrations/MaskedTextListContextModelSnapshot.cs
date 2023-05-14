@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RecAll.Contrib.TextList.Api.Services;
+using RecAll.Contrib.MaskedTextList.Api.Services;
 
 #nullable disable
 
-namespace RecAll.Contrib.TextList.Api.Migrations
+namespace RecAll.Contrib.MaskedTextList.Api.Migrations
 {
-    [DbContext(typeof(TextListContext))]
-    [Migration("20230312130713_Initial")]
-    partial class Initial
+    [DbContext(typeof(MaskedTextListContext))]
+    partial class MaskedTextListContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,16 +22,16 @@ namespace RecAll.Contrib.TextList.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.HasSequence("textitemseq", "textlist")
+            modelBuilder.HasSequence("maskedtextitems", "maskedtextlist")
                 .IncrementsBy(10);
 
-            modelBuilder.Entity("RecAll.Contrib.TextList.Api.Models.TextItem", b =>
+            modelBuilder.Entity("RecAll.Contrib.MaskedTextList.Api.Models.MaskedTextItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "textitemseq", "textlist");
+                    SqlServerPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "maskedtextitems", "maskedtextlist");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -45,6 +42,10 @@ namespace RecAll.Contrib.TextList.Api.Migrations
 
                     b.Property<int?>("ItemId")
                         .HasColumnType("int");
+
+                    b.Property<string>("MaskedContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserIdentityGuid")
                         .IsRequired()
@@ -58,7 +59,7 @@ namespace RecAll.Contrib.TextList.Api.Migrations
 
                     b.HasIndex("UserIdentityGuid");
 
-                    b.ToTable("textitems", (string)null);
+                    b.ToTable("maskedtextitems", (string)null);
                 });
 #pragma warning restore 612, 618
         }

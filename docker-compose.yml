@@ -26,7 +26,14 @@ services:
       dockerfile: Contrib/TextList.Api/Dockerfile
     extra_hosts:
       - "host.docker.internal:host-gateway"
-
+        
+  recall-maskedtextlist.api:
+    image: ${DOCKER_REGISTRY-}recall-maskedtextlist.api
+    build:
+      context: .
+      dockerfile: Contrib/MaskedTextList.Api/Dockerfile
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   recall-list.api:
     image: ${DOCKER_REGISTRY-}recall-list.api
