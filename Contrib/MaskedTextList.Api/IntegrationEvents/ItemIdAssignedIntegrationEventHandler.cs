@@ -11,15 +11,15 @@ public class ItemIdAssignedIntegrationEventHandler :
     private readonly ILogger<ItemIdAssignedIntegrationEventHandler> _logger;
 
     public ItemIdAssignedIntegrationEventHandler(
-        MaskedTextListContext MaskedTextListContext,
+        MaskedTextListContext maskedTextListContext,
         ILogger<ItemIdAssignedIntegrationEventHandler> logger) {
-        _maskedTextListContext = MaskedTextListContext ??
-            throw new ArgumentNullException(nameof(MaskedTextListContext));
+        _maskedTextListContext = maskedTextListContext ??
+            throw new ArgumentNullException(nameof(maskedTextListContext));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task Handle(ItemIdAssignedIntegrationEvent @event) {
-        if (@event.TypeId != ListType.Text.Id) {
+        if (@event.TypeId != ListType.MaskedText.Id) {
             return;
         }
 
