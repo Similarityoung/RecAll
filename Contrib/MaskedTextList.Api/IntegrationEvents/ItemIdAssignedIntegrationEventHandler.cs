@@ -7,13 +7,13 @@ namespace RecAll.Contrib.MaskedTextList.Api.IntegrationEvents;
 
 public class ItemIdAssignedIntegrationEventHandler :
     IIntegrationEventHandler<ItemIdAssignedIntegrationEvent> {
-    private readonly MaskedTextListContext _textListContext;
+    private readonly MaskedTextListContext _maskedTextListContext;
     private readonly ILogger<ItemIdAssignedIntegrationEventHandler> _logger;
 
     public ItemIdAssignedIntegrationEventHandler(
         MaskedTextListContext MaskedTextListContext,
         ILogger<ItemIdAssignedIntegrationEventHandler> logger) {
-        _textListContext = MaskedTextListContext ??
+        _maskedTextListContext = MaskedTextListContext ??
             throw new ArgumentNullException(nameof(MaskedTextListContext));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
@@ -27,16 +27,16 @@ public class ItemIdAssignedIntegrationEventHandler :
             "----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})",
             @event.Id, InitialFunctions.AppName, @event);
 
-        var textItem = await _textListContext.MaskedTextItems.FirstOrDefaultAsync(p =>
+        var maskedTextItem = await _maskedTextListContext.MaskedTextItems.FirstOrDefaultAsync(p =>
             p.Id == int.Parse(@event.ContribId));
 
-        if (textItem is null) {
+        if (maskedTextItem is null) {
             _logger.LogWarning("Unknown TextItem id: {ItemId}", @event.ItemId);
             return;
         }
 
-        textItem.ItemId = @event.ItemId;
-        await _textListContext.SaveChangesAsync();
+        maskedTextItem.ItemId = @event.ItemId;
+        await _maskedTextListContext.SaveChangesAsync();
 
         _logger.LogInformation(
             "----- Integration event handled: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})",

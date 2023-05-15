@@ -24,28 +24,29 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 Log.Logger = InitialFunctions.CreateSerilogLogger(builder.Configuration);
 
-//try {
-    builder.WebHost.CaptureStartupErrors(true).ConfigureKestrel(options => {
+try
+{
+    builder.WebHost.CaptureStartupErrors(true).ConfigureKestrel(options =>
+    {
         options.Listen(IPAddress.Any, 81,
-            listenOptions => {
-                listenOptions.Protocols = HttpProtocols.Http2;
-            });
+            listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
         options.Listen(IPAddress.Any, 80,
-            listenOptions => {
-                listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
-            });
+            listenOptions => { listenOptions.Protocols = HttpProtocols.Http1AndHttp2; });
     });
 
     builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-    builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder => {
+    builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+    {
         containerBuilder.RegisterModule(new ApplicationModule());
     });
 
     builder.Host.UseSerilog();
 
-    builder.Services.AddDbContext<MaskedTextListContext>(options => {
+    builder.Services.AddDbContext<MaskedTextListContext>(options =>
+    {
         options.UseSqlServer(builder.Configuration["MaskedTextListContext"],
-            sqlServerOptionsAction => {
+            sqlServerOptionsAction =>
+            {
                 sqlServerOptionsAction.MigrationsAssembly(
                     typeof(InitialFunctions).GetTypeInfo().Assembly.GetName()
                         .Name);
@@ -56,22 +57,26 @@ Log.Logger = InitialFunctions.CreateSerilogLogger(builder.Configuration);
 
     builder.Services.AddTransient<IIdentityService, MockIdentityService>();
 
-    builder.Services.AddSingleton<IRabbitMQConnection>(serviceProvider => {
+    builder.Services.AddSingleton<IRabbitMQConnection>(serviceProvider =>
+    {
         var logger = serviceProvider
             .GetRequiredService<ILogger<RabbitMQConnection>>();
 
-        var factory = new ConnectionFactory {
+        var factory = new ConnectionFactory
+        {
             HostName = builder.Configuration["RabbitMQ"],
             DispatchConsumersAsync = true
         };
 
         if (!string.IsNullOrWhiteSpace(
-                builder.Configuration["RabbitMQUserName"])) {
+                builder.Configuration["RabbitMQUserName"]))
+        {
             factory.UserName = builder.Configuration["RabbitMQUserName"];
         }
 
         if (!string.IsNullOrWhiteSpace(
-                builder.Configuration["RabbitMQPassword"])) {
+                builder.Configuration["RabbitMQPassword"]))
+        {
             factory.Password = builder.Configuration["RabbitMQPassword"];
         }
 
@@ -84,7 +89,8 @@ Log.Logger = InitialFunctions.CreateSerilogLogger(builder.Configuration);
         return new RabbitMQConnection(factory, logger, retryCount);
     });
 
-    builder.Services.AddCors(options => {
+    builder.Services.AddCors(options =>
+    {
         options.AddPolicy("CorsPolicy",
             builder => builder.SetIsOriginAllowed(host => true).AllowAnyMethod()
                 .AllowAnyHeader().AllowCredentials());
@@ -95,7 +101,8 @@ Log.Logger = InitialFunctions.CreateSerilogLogger(builder.Configuration);
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    builder.Services.AddOptions().Configure<ApiBehaviorOptions>(options => {
+    builder.Services.AddOptions().Configure<ApiBehaviorOptions>(options =>
+    {
         options.InvalidModelStateResponseFactory = context =>
             new OkObjectResult(ServiceResult.CreateInvalidParameterResult(
                     new ValidationProblemDetails(context.ModelState).Errors
@@ -126,26 +133,32 @@ Log.Logger = InitialFunctions.CreateSerilogLogger(builder.Configuration);
 
     var app = builder.Build();
 
-    if (app.Environment.IsDevelopment()) {
+    if (app.Environment.IsDevelopment())
+    {
         app.UseSwagger();
         app.UseSwaggerUI();
-    } else {
+    }
+    else
+    {
         app.UseExceptionHandler("/Error");
     }
 
     app.UseCors("CorsPolicy");
     app.UseRouting();
 
-    app.UseEndpoints(endpoints => {
+    app.UseEndpoints(endpoints =>
+    {
         endpoints.MapDefaultControllerRoute();
         endpoints.MapControllers();
         endpoints.MapHealthChecks("/hc",
-            new HealthCheckOptions {
+            new HealthCheckOptions
+            {
                 Predicate = _ => true,
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
         endpoints.MapHealthChecks("/liveness",
-            new HealthCheckOptions {
+            new HealthCheckOptions
+            {
                 Predicate = r => r.Name.Contains("self")
             });
     });
@@ -155,13 +168,17 @@ Log.Logger = InitialFunctions.CreateSerilogLogger(builder.Configuration);
     textContext!.Database.Migrate();
 
     InitialFunctions.ConfigureEventBus(app);
-    
+
     app.Run();
     return 0;
-//} catch (Exception e) {
- //   Log.Fatal(e, "Program terminated unexpectedly ({ApplicationContext})!",
- //       InitialFunctions.AppName);
- //   return 1;
-//} finally {
+}
+catch (Exception e)
+{
+    Log.Fatal(e, "Program terminated unexpectedly ({ApplicationContext})!",
+        InitialFunctions.AppName);
+    return 1;
+}
+finally
+{
     Log.CloseAndFlush();
-//}
+}
