@@ -37,6 +37,7 @@ public class ItemController {
             Content = command.Content,
             UserIdentityGuid = _identityService.GetUserIdentityGuid(),
             IsDeleted = false
+            
         };
         var textItemEntity = _textListContext.Add(textItem);
         await _textListContext.SaveChangesAsync();
@@ -73,6 +74,7 @@ public class ItemController {
         }
 
         textItem.Content = command.Content;
+        
         await _textListContext.SaveChangesAsync();
 
         _logger.LogInformation("----- Command {CommandName} handled",
@@ -109,6 +111,7 @@ public class ItemController {
                     Id = textItem.Id,
                     ItemId = textItem.ItemId,
                     Content = textItem.Content
+                    
                 }).ToServiceResultViewModel();
     }
 
@@ -140,6 +143,7 @@ public class ItemController {
                     Id = textItem.Id,
                     ItemId = textItem.ItemId,
                     Content = textItem.Content
+                    
                 }).ToServiceResultViewModel();
     }
 

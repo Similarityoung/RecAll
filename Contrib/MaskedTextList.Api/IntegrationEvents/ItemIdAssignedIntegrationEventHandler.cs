@@ -27,7 +27,7 @@ public class ItemIdAssignedIntegrationEventHandler :
             "----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})",
             @event.Id, InitialFunctions.AppName, @event);
 
-        var textItem = await _textListContext.TextItems.FirstOrDefaultAsync(p =>
+        var textItem = await _textListContext.MaskedTextItems.FirstOrDefaultAsync(p =>
             p.Id == int.Parse(@event.ContribId));
 
         if (textItem is null) {

@@ -8,7 +8,7 @@ namespace RecAll.Contrib.MaskedTextList.Api.Services;
 public class MaskedTextListContext : DbContext {
     public const string DefaultSchema = "maskedtextlist";
 
-    public DbSet<MaskedTextItem> TextItems { get; set; }
+    public DbSet<MaskedTextItem> MaskedTextItems { get; set; }
 
     public MaskedTextListContext(DbContextOptions<MaskedTextListContext> options) :
         base(options) { }
